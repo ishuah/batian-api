@@ -1,3 +1,4 @@
+import json
 from tastypie import fields
 from tastypie.contrib.gis.resources import ModelResource
 from tastypie.contrib.contenttypes.fields import GenericForeignKeyField
@@ -7,6 +8,7 @@ from tastypie.resources import ALL_WITH_RELATIONS
 
 
 class MapResource(ModelResource):
+    layers = fields.ToManyField('core.api.LayerResource', 'layer_set', null=True, blank=True, full_detail=True, full=True)
     class Meta:
         queryset = Map.objects.all()
         resource_name = 'map'
@@ -19,6 +21,7 @@ class LayerResource(ModelResource):
         authentication = ApiKeyAuthentication()
 
 class SiteResource(ModelResource):
+    data = fields.DictField(attribute='data')
     shapes = fields.ToManyField('core.api.ShapeResource', '_shape', null=True, blank=True, full_detail=True, full=True)
     class Meta:
         queryset = Site.objects.all()
