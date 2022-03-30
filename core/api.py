@@ -3,7 +3,7 @@ from tastypie import fields
 from tastypie.contrib.gis.resources import ModelResource
 from tastypie.contrib.contenttypes.fields import GenericForeignKeyField
 from tastypie.authentication import ApiKeyAuthentication
-from .models import *
+from .models import Map, Layer, Site, Shape, Point, Polygon, MultiPolygon
 from tastypie.resources import ALL_WITH_RELATIONS
 
 
@@ -48,12 +48,12 @@ class ShapeResource(ModelResource):
             bundle = geom_resource.full_dehydrate(new_bundle)
         return bundle
 
-    def chooseResource(self, GeomModel):
-        if GeomModel.__class__.__name__ == "Point":
+    def chooseResource(self, geom):
+        if geom.__class__.__name__ == "Point":
             return PointResource()
-        elif GeomModel.__class__.__name__ == "Polygon":
+        elif geom.__class__.__name__ == "Polygon":
             return PolygonResource()
-        elif GeomModel.__class__.__name__ == "MultiPolygon":
+        elif geom.__class__.__name__ == "MultiPolygon":
             return MultiPolygonResource()
 
 class PointResource(ShapeResource):

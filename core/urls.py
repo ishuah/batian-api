@@ -1,6 +1,6 @@
 from django.urls import re_path,include, path
 from tastypie.api import Api
-from .api import *
+from .api import MapResource, LayerResource, SiteResource, ShapeResource
 from .views import index
 
 v1_api = Api(api_name='v1')

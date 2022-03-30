@@ -1,9 +1,8 @@
 from pathlib import Path
 from django.contrib.gis.gdal import DataSource
-from core.models import *
+from core.models import Map, Layer, Site, Point
 
 def load_populated_places(path):
-    # pop_shp = Path.home() / 'Workshop' / 'shapefiles' / 'populated_places' / 'ne_10m_populated_places.shp'
     ds = DataSource(path)
     lyr = ds[0]
 
