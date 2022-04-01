@@ -3,6 +3,7 @@ from tastypie import fields
 from tastypie.contrib.gis.resources import ModelResource
 from tastypie.contrib.contenttypes.fields import GenericForeignKeyField
 from tastypie.authentication import ApiKeyAuthentication
+from tastypie.authorization import Authorization
 from .models import Map, Layer, Site, Shape, Point, Polygon, MultiPolygon
 from tastypie.resources import ALL_WITH_RELATIONS
 
@@ -13,6 +14,7 @@ class MapResource(ModelResource):
         queryset = Map.objects.all()
         resource_name = 'map'
         authentication = ApiKeyAuthentication()
+        authorization = Authorization()
 
 class LayerResource(ModelResource):
     class Meta:

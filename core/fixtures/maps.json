@@ -1,0 +1,10 @@
+[
+{
+    "model": "core.map",
+    "pk": 1,
+    "fields": {
+        "name": "Populated Places",
+        "description": "City and town points, from Tokyo to Wasilla, Cairo to Kandahar"
+    }
+}
+]
