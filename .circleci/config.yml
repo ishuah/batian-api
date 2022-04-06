@@ -6,11 +6,15 @@ jobs:
     docker:
       - image: cimg/python:3.10.2
         environment:
-          DATABASE_URL: postgresql://root@localhost/${DB_NAME}?sslmode=disable
+          ENV: CIRCLE
+          DATABASE_URL: postgresql://circleci@localhost/circle_test
       - image: cimg/postgres:12.10-postgis
         environment:
-          POSTGRES_USER: $DB_USER
-          POSTGRES_DB: $DB_NAME
+          PGHOST: localhost
+          PGUSER: circleci
+          POSTGRES_USER: circleci
+          POSTGRES_DB: circle_test
+          POSTGRES_HOST_AUTH_METHOD: trust
     steps:
       - checkout
       - run:
