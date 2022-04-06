@@ -7,10 +7,9 @@ jobs:
       - image: cimg/python:3.10.2
         environment:
           ENV: CIRCLE
-          DATABASE_URL: postgresql://circleci@localhost/circle_test
+          DATABASE_URL: postgresql://circleci@0.0.0.0/circle_test
       - image: cimg/postgres:12.10-postgis
         environment:
-          PGHOST: localhost
           PGUSER: circleci
           POSTGRES_USER: circleci
           POSTGRES_DB: circle_test
