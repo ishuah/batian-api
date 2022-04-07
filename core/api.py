@@ -4,7 +4,7 @@ from tastypie.contrib.gis.resources import ModelResource
 from tastypie.contrib.contenttypes.fields import GenericForeignKeyField
 from tastypie.authentication import ApiKeyAuthentication
 from tastypie.authorization import Authorization
-from .models import Map, Layer, Site, Shape, Point, Polygon, MultiPolygon
+from .models import Map, Layer, Site, Shape, Point, Polygon, MultiPolygon, Line
 from tastypie.resources import ALL_WITH_RELATIONS
 
 
@@ -24,11 +24,15 @@ class LayerResource(ModelResource):
 
 class SiteResource(ModelResource):
     data = fields.DictField(attribute='data')
+    layer = fields.ForeignKey('core.api.LayerResource', 'layer', null=False, blank=False, full_detail=False, full=False)
     shapes = fields.ToManyField('core.api.ShapeResource', '_shape', null=True, blank=True, full_detail=True, full=True)
     class Meta:
         queryset = Site.objects.all()
         resource_name = 'site'
         authentication = ApiKeyAuthentication()
+        filtering = {
+            'layer': ALL_WITH_RELATIONS
+        }
 
 class ShapeResource(ModelResource):
     content_object = GenericForeignKeyField({
@@ -57,6 +61,8 @@ class ShapeResource(ModelResource):
             return PolygonResource()
         elif geom.__class__.__name__ == "MultiPolygon":
             return MultiPolygonResource()
+        elif geom.__class__.__name__ == "Line":
+            return LineResource()
 
 class PointResource(ShapeResource):
     class Meta:
@@ -77,6 +83,14 @@ class PolygonResource(ShapeResource):
 class MultiPolygonResource(ShapeResource):
     class Meta:
         queryset = MultiPolygon.objects.all()
+        authentication = ApiKeyAuthentication()
+
+    def dehydrate(self, bundle):
+        return bundle
+
+class LineResource(ShapeResource):
+    class Meta:
+        queryset = Line.objects.all()
         authentication = ApiKeyAuthentication()
 
     def dehydrate(self, bundle):
